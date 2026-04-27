@@ -258,25 +258,27 @@ export default function App() {
 
       {toast && <Toast msg={toast} onClose={() => setToast('')} />}
 
-      <footer className="app-footer" aria-label="Application footer">
-        <div className="app-footer-center">
-          <span className="app-footer-brand">CineVerse</span>
-          <span>247071A05M2</span>
-          <button
-            onClick={() => setPage('calculator')}
-            style={{
-              background: 'none', border: '1px solid rgba(255,255,255,0.15)',
-              borderRadius: 999, padding: '4px 14px', color: 'rgba(255,255,255,0.55)',
-              fontSize: 12, cursor: 'pointer', marginLeft: 8,
-              transition: 'all 0.2s ease',
-            }}
-            onMouseEnter={e => { e.target.style.borderColor = 'rgba(167,139,250,0.4)'; e.target.style.color = '#a78bfa'; }}
-            onMouseLeave={e => { e.target.style.borderColor = 'rgba(255,255,255,0.15)'; e.target.style.color = 'rgba(255,255,255,0.55)'; }}
-          >
-            🎟️ Price Calculator
-          </button>
-        </div>
-      </footer>
+      {page !== 'calculator' && (
+        <footer className="app-footer" aria-label="Application footer">
+          <div className="app-footer-center">
+            <span className="app-footer-brand">CineVerse</span>
+            <span>24071A05M2</span>
+            <button
+              onClick={() => setPage('calculator')}
+              style={{
+                background: 'none', border: '1px solid rgba(255,255,255,0.15)',
+                borderRadius: 999, padding: '4px 14px', color: 'rgba(255,255,255,0.55)',
+                fontSize: 12, cursor: 'pointer', marginLeft: 8,
+                transition: 'all 0.2s ease',
+              }}
+              onMouseEnter={e => { e.target.style.borderColor = 'rgba(167,139,250,0.4)'; e.target.style.color = '#a78bfa'; }}
+              onMouseLeave={e => { e.target.style.borderColor = 'rgba(255,255,255,0.15)'; e.target.style.color = 'rgba(255,255,255,0.55)'; }}
+            >
+              🎟️ Price Calculator
+            </button>
+          </div>
+        </footer>
+      )}
     </>
   );
 }

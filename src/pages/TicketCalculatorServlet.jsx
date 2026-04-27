@@ -269,6 +269,24 @@ export default function TicketCalculatorServlet({ onBack }) {
           </div>
         )}
       </div>
+
+      <footer
+        style={{
+          position: 'fixed',
+          left: 0,
+          right: 0,
+          bottom: 0,
+          zIndex: 1300,
+          background: '#ffffff',
+          borderTop: '1px solid #ddd',
+          textAlign: 'center',
+          padding: '14px 10px',
+          fontWeight: 700,
+          color: '#111',
+        }}
+      >
+        24071A05M2
+      </footer>
     </div>
   );
 }

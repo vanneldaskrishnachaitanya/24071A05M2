@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CineVerse — Ticket Calculator</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      color: #222;
+      min-height: 100vh;
+      padding: 40px 16px 90px;
+    }
+
+    .wrapper {
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: 28px;
+      margin-bottom: 6px;
+      color: #111;
+    }
+
+    .subtitle {
+      color: #666;
+      margin-bottom: 24px;
+      font-size: 14px;
+    }
+
+    .card {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      margin-top: 14px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    select,
+    input[type="number"] {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+      background: #fff;
+    }
+
+    select:focus,
+    input:focus {
+      outline: none;
+      border-color: #2563eb;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 18px;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: #2563eb;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #1d4ed8;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .error,
+    .result {
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 8px;
+      display: none;
+    }
+
+    .error {
+      background: #fee2e2;
+      border: 1px solid #fca5a5;
+      color: #b91c1c;
+    }
+
+    .result {
+      background: #f8fafc;
+      border: 1px solid #dbeafe;
+    }
+
+    .show {
+      display: block;
+    }
+
+    .result-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid #e5e7eb;
+      font-size: 14px;
+    }
+
+    .result-row:last-of-type {
+      border-bottom: none;
+    }
+
+    .result-total {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 14px;
+      padding-top: 10px;
+      border-top: 1px solid #cbd5e1;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .footer {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 9999;
+      background: #ffffff;
+      border-top: 2px solid #cbd5e1;
+      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.08);
+      text-align: center;
+      padding: 14px 10px;
+      font-weight: 700;
+      color: #111;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <h1>CineVerse</h1>
+    <p class="subtitle">Ticket Price Calculator</p>
+
+    <div class="card">
+      <label for="movie">Select Movie</label>
+      <select id="movie">
+        <option value="Stellar Drift">Stellar Drift — ₹380/seat</option>
+        <option value="The Last Algorithm">The Last Algorithm — ₹320/seat</option>
+        <option value="Neon Dynasty">Neon Dynasty — ₹360/seat</option>
+        <option value="Whispers in Rain">Whispers in Rain — ₹260/seat</option>
+        <option value="Abyss Protocol">Abyss Protocol — ₹300/seat</option>
+        <option value="Crimson Meridian">Crimson Meridian — ₹280/seat</option>
+        <option value="Quantum Hearts">Quantum Hearts — ₹340/seat</option>
+        <option value="Desert Kings">Desert Kings — ₹290/seat</option>
+      </select>
+
+      <label for="seatType">Seat Type</label>
+      <select id="seatType">
+        <option value="standard">Standard (Rows C–H)</option>
+        <option value="premium">Premium (Rows A–B) — 1.5×</option>
+      </select>
+
+      <label for="tickets">Number of Tickets (1–10)</label>
+      <input type="number" id="tickets" value="1" min="1" max="10" />
+
+      <button id="calcBtn" onclick="calculate()">Calculate Total Cost</button>
+
+      <div class="error" id="errorBox"></div>
+
+      <div class="result" id="resultBox">
+        <div class="result-row"><span>Movie</span><span id="r-movie"></span></div>
+        <div class="result-row"><span>Seat Type</span><span id="r-seatType"></span></div>
+        <div class="result-row"><span>Tickets</span><span id="r-tickets"></span></div>
+        <div class="result-row"><span>Price per Ticket</span><span id="r-unitPrice"></span></div>
+        <div class="result-row"><span>Base Price</span><span id="r-subtotal"></span></div>
+        <div class="result-row"><span>Convenience Fee (5%)</span><span id="r-convenience"></span></div>
+        <div class="result-row"><span>GST (18%)</span><span id="r-gst"></span></div>
+        <div class="result-total">
+          <span>Total Amount</span>
+          <span id="r-grandTotal"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">24071A05M2</footer>
+
+  <script>
+    async function calculate() {
+      const movie = document.getElementById('movie').value;
+      const seatType = document.getElementById('seatType').value;
+      const tickets = document.getElementById('tickets').value;
+      const btn = document.getElementById('calcBtn');
+      const errorBox = document.getElementById('errorBox');
+      const resultBox = document.getElementById('resultBox');
+
+      errorBox.classList.remove('show');
+      resultBox.classList.remove('show');
+      btn.disabled = true;
+      btn.textContent = 'Calculating...';
+
+      try {
+        const url = `calculate?movie=${encodeURIComponent(movie)}&seatType=${seatType}&tickets=${tickets}`;
+        const res = await fetch(url);
+        const data = await res.json();
+
+        if (data.error) {
+          errorBox.textContent = data.error;
+          errorBox.classList.add('show');
+        } else {
+          document.getElementById('r-movie').textContent = data.movie;
+          document.getElementById('r-seatType').textContent = data.seatType === 'premium' ? 'Premium' : 'Standard';
+          document.getElementById('r-tickets').textContent = data.tickets;
+          document.getElementById('r-unitPrice').textContent = '₹' + data.unitPrice.toLocaleString();
+          document.getElementById('r-subtotal').textContent = '₹' + data.subtotal.toLocaleString();
+          document.getElementById('r-convenience').textContent = '₹' + data.convenience.toLocaleString();
+          document.getElementById('r-gst').textContent = '₹' + data.gst.toLocaleString();
+          document.getElementById('r-grandTotal').textContent = '₹' + data.grandTotal.toLocaleString();
+          resultBox.classList.add('show');
+        }
+      } catch (err) {
+        errorBox.textContent = 'Could not reach server. Make sure the server is running.';
+        errorBox.classList.add('show');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Calculate Total Cost';
+      }
+    }
+  </script>
+</body>
+</html>
